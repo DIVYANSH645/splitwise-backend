@@ -1,20 +1,22 @@
 package com.splitwise.model;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
-
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "expense_splits")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"expense", "user"})
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"expense", "user"})
 public class ExpenseSplit {
     
@@ -35,4 +37,16 @@ public class ExpenseSplit {
     
     @Column(nullable = false)
     private String splitType; // EQUAL, PERCENTAGE, ITEMIZE
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ExpenseSplit other)) return false;
+        return splitId != null && splitId.equals(other.splitId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
